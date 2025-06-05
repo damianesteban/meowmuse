@@ -1,10 +1,14 @@
-<p align="center">
+<span>
   <img src="public/images/image.png" alt="Centered Image" width="100"/>
-</p>
+  <img src="public/images/redwood.svg" alt="Centered Image" width="300" style="margin-top: -20px;" />
+</span>
+
 
 # Meow Muse
 
 **Meow Muse** is proof of concept application that allows users to chat with an AI Assistant about their cat's health. The AI uses RAG and only returns an answer if relevant data exists in the vector database.
+
+**NOTE:** If the Meow Muse UX/UI looks similar to the ApplyWize Redwood SDK Tutorial App - that's because it is 😺.
 
 ## Stack
 - Meow Muse is built with the [Redwood SDK](https://rwsdk.com/). See the section below and their docs for more information.
