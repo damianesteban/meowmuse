@@ -1,0 +1,111 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+  output          = "../node_modules/.prisma/client"
+
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String      @id @default(uuid()) // User ID (UUID-based)
+  username    String      @unique
+  createdAt   DateTime    @default(now())
+
+  credentials Credential[] // Relationship: One user can have many credentials
+  cats      Cat[]
+  chats     Chat[]
+}
+
+model Credential {
+  id            String   @id @default(uuid()) // Internal DB ID
+  userId        String   @unique // Every credential is linked to a specific user
+  user          User     @relation(fields: [userId], references: [id])
+  createdAt     DateTime @default(now())
+  credentialId  String   @unique // WebAuthn credential identifier
+  publicKey     Bytes
+  counter       Int      @default(0)
+  
+  @@index([credentialId])
+  @@index([userId])
+}
+
+model Cat {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  name      String
+  breed     String
+  age       Int
+  weight    Float
+  isKitten  Boolean @default(false)
+  notes     String?
+  imageKey  String?
+  gender    Gender
+  weightStatus WeightStatus @default(idealWeight)
+  neuterOrSpayed Boolean @default(false)
+  activityLevel ActivityLevel @default(medium)
+  vaccinationStatus VaccinationStatus @default(unknown)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  chat      Chat?    @relation("CatChat")
+}
+
+model Chat {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  title     String?
+  createdAt DateTime @default(now())
+
+  catId     String   @unique
+  cat       Cat      @relation("CatChat", fields: [catId], references: [id])
+  messages  ChatMessage[]
+}
+
+model ChatMessage {
+  id        String   @id @default(uuid())
+  chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  chatId    String
+  sender    Sender
+  content   String
+  timestamp DateTime @default(now())
+}
+
+enum Sender {
+  user
+  assistant
+}
+
+enum Gender {
+  male
+  female
+}
+
+enum WeightStatus {
+  underWeight
+  overWeight
+  idealWeight
+}
+
+enum ActivityLevel {
+  low
+  medium
+  high
+}
+
+enum VaccinationStatus {
+  unknown
+  upToDate
+  due
+  overdue
+}

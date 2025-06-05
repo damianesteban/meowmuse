@@ -1,0 +1,6 @@
+WEBAUTHN_RP_ID=localhost
+AUTH_SECRET_KEY=your-development-secret-key
+DATABASE_URL="file:../.wrangler/state/v3/d1/miniflare-D1DatabaseObject/your-database.sqlite"
+QDRANT_URL=https://your.qdrant.url
+QDRANT_API_KEY=YOUR_QDRANT_API_KEY
+OPENAI_API_KEY="sk-xxxxx"
