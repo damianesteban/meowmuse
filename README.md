@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="public/images/image.png" alt="Centered Image" width="100"/>
+</p>
+
 # Meow Muse
 
 **Meow Muse** is proof of concept application that allows users to chat with an AI Assistant about their cat's health. The AI uses RAG and only returns an answer if relevant data exists in the vector database.
